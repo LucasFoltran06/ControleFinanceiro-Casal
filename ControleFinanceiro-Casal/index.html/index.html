@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro para Casal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="sidebar-header">
+                    <h3>Finanças do Casal</h3>
+                    <div class="user-profile">
+                        <img src="assets/couple-icon.png" alt="Perfil" class="profile-img">
+                        <div class="user-names">
+                            <span id="user1-name">Lucas</span> & <span id="user2-name">Cecília</span>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#transactions">
+                            <i class="bi bi-wallet2"></i> Transações
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#budget">
+                            <i class="bi bi-clipboard-data"></i> Orçamento
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#goals">
+                            <i class="bi bi-bullseye"></i> Metas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#debts">
+                            <i class="bi bi-credit-card"></i> Dívidas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reports">
+                            <i class="bi bi-graph-up"></i> Relatórios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#settings">
+                            <i class="bi bi-gear"></i> Configurações
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="dashboard-section">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard Financeiro</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <select id="month-select" class="form-select">
+                                    <option value="0">Todos os meses</option>
+                                    <!-- Options will be populated by JavaScript -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="row summary-cards">
+                        <div class="col-md-3">
+                            <div class="card income-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Receitas</h5>
+                                    <h2 class="card-value" id="total-income">R$ 0,00</h2>
+                                    <p class="card-change"><span id="income-change">0%</span> vs mês anterior</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card expense-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Despesas</h5>
+                                    <h2 class="card-value" id="total-expenses">R$ 0,00</h2>
+                                    <p class="card-change"><span id="expense-change">0%</span> vs mês anterior</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card balance-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Saldo</h5>
+                                    <h2 class="card-value" id="total-balance">R$ 0,00</h2>
+                                    <p class="card-change"><span id="balance-change">0%</span> vs mês anterior</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card savings-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Poupança</h5>
+                                    <h2 class="card-value" id="total-savings">R$ 0,00</h2>
+                                    <p class="card-change"><span id="savings-progress">0%</span> da meta</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="row charts-row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Receitas vs Despesas</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="incomeExpenseChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Distribuição de Gastos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="expenseDistributionChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second Charts Row -->
+                    <div class="row charts-row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Gastos por Categoria</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="categorySpendingChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Progresso de Metas</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="goalsProgressChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5>Últimas Transações</h5>
+                                    <button class="btn btn-sm btn-primary" id="add-transaction-btn">
+                                        <i class="bi bi-plus"></i> Adicionar
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Data</th>
+                                                    <th>Descrição</th>
+                                                    <th>Categoria</th>
+                                                    <th>Valor</th>
+                                                    <th>Responsável</th>
+                                                    <th>Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="recent-transactions">
+                                                <!-- Transactions will be populated by JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transactions Section -->
+                <section id="transactions" class="d-none">
+                    <!-- Similar structure to dashboard but focused on transactions -->
+                </section>
+
+                <!-- Other sections (Budget, Goals, Debts, Reports, Settings) -->
+                <!-- Similar structure for each section -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Transação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="transaction-form">
+                        <div class="mb-3">
+                            <label for="transaction-type" class="form-label">Tipo</label>
+                            <select class="form-select" id="transaction-type" required>
+                                <option value="">Selecione...</option>
+                                <option value="income">Receita</option>
+                                <option value="expense">Despesa</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-date" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="transaction-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-description" class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="transaction-description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-category" class="form-label">Categoria</label>
+                            <select class="form-select" id="transaction-category" required>
+                                <option value="">Selecione...</option>
+                                <!-- Categories will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-amount" class="form-label">Valor</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" step="0.01" class="form-control" id="transaction-amount" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-payment" class="form-label">Forma de Pagamento</label>
+                            <select class="form-select" id="transaction-payment" required>
+                                <option value="">Selecione...</option>
+                                <option value="cash">Dinheiro</option>
+                                <option value="debit">Débito</option>
+                                <option value="credit">Crédito</option>
+                                <option value="pix">PIX</option>
+                                <option value="transfer">Transferência</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-responsible" class="form-label">Responsável</label>
+                            <select class="form-select" id="transaction-responsible" required>
+                                <option value="">Selecione...</option>
+                                <option value="user1">Lucas</option>
+                                <option value="user2">Cecília</option>
+                                <option value="both">Ambos</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-notes" class="form-label">Observações</label>
+                            <textarea class="form-control" id="transaction-notes" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="save-transaction">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
